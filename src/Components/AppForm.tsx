@@ -1,4 +1,4 @@
-import  { FormEvent, useRef, useState } from 'react'
+import  { FormEvent, useEffect, useRef, useState } from 'react'
 import { application } from './Table';
 import { status } from '../App';
 // import { counter, updateCounter } from '../App';
@@ -22,7 +22,14 @@ function AppForm({handleApplication}:Props) {
 let companyRef = useRef<HTMLInputElement>(null);
 let linkRef = useRef<HTMLInputElement>(null);
 let statusRef = useRef<HTMLSelectElement>(null);
-let [counter,updateCounter] = useState(6);
+// let [counter,updateCounter] = useState(6);
+let [counter,updateCounter] = useState<number>(() => {
+    const savedCounter = localStorage.getItem('counter');
+    return savedCounter !== null ? parseInt(savedCounter) : 6;
+  });
+  useEffect(() => {
+    localStorage.setItem('counter', counter.toString());
+  }, [counter]);
 const handleForm =(event:FormEvent)=>{
     event.preventDefault();
     
